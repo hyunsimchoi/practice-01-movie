@@ -1,4 +1,5 @@
 import {useState} from "react";
+import styles from "./App.module.css";
 
 function App() {
     const genres = ["액션", "코미디", "드라마", "SF", "공포", "멜로"];
@@ -59,25 +60,25 @@ function App() {
         return item.watched ? sum + 1 : sum
     }, 0);
 
-    return <>
-        <h2>나의 영화 기록장</h2>
+    return <div className={styles.container} >
+        <h2 className={styles.title}>Favorite Movie</h2>
         <fieldset>
-            <legend>영화 추가</legend>
-            <form onSubmit={handleOnSubmit}>
-                <input
+            <legend className={styles.legend}>영화 추가</legend>
+            <form onSubmit={handleOnSubmit} className={styles.form}>
+                <input className={styles.input}
                     placeholder={"영화 제목"}
                     onChange={handleChangeTitle}
                     value={title}
                 />
                 <select
+                    className={styles.select}
                     onChange={handleChangeGenre}
-                    value={genre}
-                >
+                    value={genre}>
                     {genres.map((item, index) => {
                         return <option key={index} value={item}>{item}</option>
                     })}
                 </select>
-                <select
+                <select className={styles.select}
                     onChange={handleChangeRating}
                     value={rating}
                 >
@@ -85,11 +86,11 @@ function App() {
                         return <option key={index} value={item}>별점 {item}점</option>
                     })}
                 </select>
-                <button type={"submit"}>추가</button>
+                <button type={"submit"} className={styles.addButton}>추가</button>
             </form>
         </fieldset>
-        <h3>전체 {movies.length}편 / 감상 완료 {totalWatched}편</h3>
-        <div style={{display: "flex", flexWrap: "wrap", gap: "12px"}}>
+        <h3 className={styles.summaryText}>전체 {movies.length}편 / 감상 완료 {totalWatched}편</h3>
+        <div className={styles.movieList}>
             {movies.map((item, index) => {
                 // let stars = "";
                 // if (item.rating === "5") {
@@ -107,16 +108,15 @@ function App() {
                 // repeat(숫자) 메서드 : 제공된 string을 숫자만큼 반복
 
                 return (
-                    <div style={{
-                        width: "200px",
-                        padding: "12px",
-                        border: "1px solid #ccc",
-                        borderRadius: "8px",
-                        opacity: item.watched ? 0.5 : 1,
+                    <div
+                        key={index}
+                        className={styles.movieCard}
+                        style={{opacity: item.watched ? 0.5 : 1,
                     }}>
                         <h4 style={{ margin: "0 0 8px"}}>{item.title}</h4>
                         <div>장르: {item.genre}</div>
-                        <div>{"★".repeat(Number(item.rating)) + "☆".repeat(5 - Number(item.rating))}</div>
+                        <div className={styles.stars}
+                        >{"★".repeat(Number(item.rating)) + "☆".repeat(5 - Number(item.rating))}</div>
                         <label>
                             <input
                                 type={"checkbox"}
@@ -144,7 +144,7 @@ function App() {
                 )
             })}
         </div>
-    </>
+    </div>
 }
 
 export default App;
